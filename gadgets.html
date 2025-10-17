@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Gadgets & Smartwatches — DigitalBazaarPro</title>
+  <meta name="description" content="Best smartwatches, TWS, and small gadgets — deals from Amazon & Flipkart."/>
+  <link rel="icon" href="assets/favicon.ico"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* small page-specific tweaks (will use same global style.css) */
+    header.page-header { background: linear-gradient(90deg,#f8fbff,#fff); padding:18px; border-bottom:1px solid #e6eefc; text-align:center; }
+    header.page-header h1 { margin:0; color:var(--brand-blue); font-size:20px; }
+    .product-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin-top:16px; }
+    .product-card img{ height:160px; object-fit:contain; background:#fff; padding:8px; }
+    .badge { display:inline-block; background:#e8f0ff; color:var(--brand-blue); padding:6px 10px; border-radius:20px; font-weight:700; margin-bottom:8px; }
+  </style>
+</head>
+<body>
+  <!-- Topbar (reuse same header area and nav) -->
+  <div class="topbar" role="banner">
+    <div class="wrap">
+      <a class="brand" href="index.html">
+        <img src="assets/logo.png" alt="DigitalBazaarPro logo" style="height:48px"/>
+        <div>
+          <div class="title">DigitalBazaarPro.com</div>
+          <div class="sub">Deals • Reviews • Top Picks</div>
+        </div>
+      </a>
+
+      <div class="search-box" role="search">
+        <input id="site-search" placeholder="Search products, e.g. smartwatch" />
+      </div>
+
+      <nav class="primary" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="phones.html">Phones</a>
+        <a href="earphones.html">Earphones</a>
+        <a href="laptops.html">Laptops</a>
+      </nav>
+    </div>
+  </div>
+
+  <main class="container">
+    <header class="page-header">
+      <h1>Smartwatches, TWS & Cool Gadgets — Best Deals</h1>
+      <div class="small">Top picks from Amazon & Flipkart — click to view latest price & offers.</div>
+    </header>
+
+    <section class="card" style="margin-top:18px">
+      <h2 style="margin:0 0 10px 0">Featured Gadgets</h2>
+      <div class="grid product-grid" id="gadgets-grid">
+        <!-- Product cards rendered by JS -->
+      </div>
+    </section>
+
+    <section class="card" style="margin-top:16px">
+      <h3 style="margin:0 0 8px 0">Quick Tips</h3>
+      <p class="small" style="margin:0">Compare specs, check seller rating and delivery estimate before buying. Affiliate links help this site, at no extra cost to you.</p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="small">© <span id="year"></span> DigitalBazaarPro.com — Affiliate links may earn us a commission.</div>
+      <div style="display:flex;gap:12px;align-items:center">
+        <a class="small" href="privacy.html">Privacy</a>
+        <a class="small" href="disclosure.html">Affiliate Disclosure</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Affiliate config (replace later with your real tags if changed)
+    const AMAZON_TAG = 'digitalbazaarpro-21';
+    const FLIPKART_ID = 'digitalbazaarpro';
+
+    // Real gadgets list with images (image URLs from Amazon product pages — used as thumbnails)
+    // Note: If any image doesn't load due to remote blocking, update with alternate image URL or host locally in /assets.
+    const GADGETS = [
+      {
+        id: 'B08XY2K8XZ',
+        title: 'boAt Xtend Smartwatch',
+        price: '₹2,999',
+        image: 'https://m.media-amazon.com/images/I/61l3G5oGk7L._AC_UL480_FMwebp_QL65_.jpg',
+        rating: '4.0'
+      },
+      {
+        id: 'B09MZ4Q2ZX',
+        title: 'Noise ColorFit Pro 4',
+        price: '₹2,499',
+        image: 'https://m.media-amazon.com/images/I/61wQeYk3kUL._AC_UL480_FMwebp_QL65_.jpg',
+        rating: '4.1'
+      },
+      {
+        id: 'B08P2D3J3N',
+        title: 'Boat Airdopes 441 TWS',
+        price: '₹1,499',
+        image: 'https://m.media-amazon.com/images/I/61r8w1Q0GfL._AC_UL480_FMwebp_QL65_.jpg',
+        rating: '4.2'
+      },
+      {
+        id: 'B07Y2QH6Y7',
+        title: 'Realme Buds Wireless',
+        price: '₹899',
+        image: 'https://m.media-amazon.com/images/I/61i3m+WqvVL._AC_UL480_FMwebp_QL65_.jpg',
+        rating: '4.0'
+      },
+      {
+        id: 'B07VGRJDFY',
+        title: 'Mi Band 5 (Fitness Band)',
+        price: '₹1,199',
+        image: 'https://m.media-amazon.com/images/I/61-f8c8H+OL._AC_UL480_FMwebp_QL65_.jpg',
+        rating: '4.3'
+      },
+      {
+        id: 'B0B7P6LFZK',
+        title: 'boAt Rockerz 255 (Wireless Neckband)',
+        price: '₹999',
+        image: 'https://m.media-amazon.com/images/I/61E0aZ3W0-L._AC_UL480_FMwebp_QL65_.jpg',
+        rating: '4.0'
+      },
+      {
+        id: 'B08F2CFBX7',
+        title: 'JBL TUNE 125TWS',
+        price: '₹4,999',
+        image: 'https://m.media-amazon.com/images/I/61fuq1g1WQL._AC_UL480_FMwebp_QL65_.jpg',
+        rating: '4.2'
+      },
+      {
+        id: 'B08L5Q9K2Q',
+        title: 'Noise Buds VS103',
+        price: '₹799',
+        image: 'https://m.media-amazon.com/images/I/61c2bRjV8yL._AC_UL480_FMwebp_QL65_.jpg',
+        rating: '4.0'
+      },
+      {
+        id: 'B07H9YQJH9',
+        title: 'Zebronics Zeb-Fit4220CH Smartwatch',
+        price: '₹1,799',
+        image: 'https://m.media-amazon.com/images/I/61X6Vr3g+DL._AC_UL480_FMwebp_QL65_.jpg',
+        rating: '4.0'
+      },
+      {
+        id: 'B089Q6F2X8',
+        title: 'OnePlus Buds Z2',
+        price: '₹4,999',
+        image: 'https://m.media-amazon.com/images/I/61u3kN2Xc5L._AC_UL480_FMwebp_QL65_.jpg',
+        rating: '4.1'
+      }
+    ];
+
+    // Create card
+    function makeCard(item){
+      const div = document.createElement('div');
+      div.className = 'product-card';
+      div.innerHTML = `
+        <div class="badge">Gadget</div>
+        <img src="${item.image}" alt="${item.title}" loading="lazy"/>
+        <div class="prod-title" style="font-weight:700;margin-top:6px">${item.title}</div>
+        <div class="prod-meta small">${item.price} • <span class="rating">★ ${item.rating}</span></div>
+        <div class="btn-row" style="margin-top:8px">
+          <a class="buy-btn amazon" data-aff="amazon" data-prod="${item.id}">Buy on Amazon</a>
+          <a class="buy-btn flip" data-aff="flipkart" data-prod="${item.id}">Buy on Flipkart</a>
+        </div>
+      `;
+      return div;
+    }
+
+    // Render grid
+    const grid = document.getElementById('gadgets-grid');
+    GADGETS.forEach(g => grid.appendChild(makeCard(g)));
+
+    // Affiliate link generator (same logic as other pages)
+    function applyAffiliateLinks(){
+      document.querySelectorAll('a[data-aff]').forEach(a=>{
+        const platform = a.getAttribute('data-aff');
+        const pid = a.getAttribute('data-prod') || '';
+        if(platform === 'amazon'){
+          a.href = pid ? `https://www.amazon.in/dp/${pid}/?tag=${encodeURIComponent(AMAZON_TAG)}` : `https://www.amazon.in/?tag=${encodeURIComponent(AMAZON_TAG)}`;
+        } else {
+          a.href = pid ? `https://www.flipkart.com/search?q=${encodeURIComponent(pid)}&affid=${encodeURIComponent(FLIPKART_ID)}` : `https://www.flipkart.com/?affid=${encodeURIComponent(FLIPKART_ID)}`;
+        }
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+      });
+    }
+    applyAffiliateLinks();
+
+    // Search hook (reuse input)
+    document.getElementById('site-search').addEventListener('input', function(e){
+      const q = e.target.value.trim().toLowerCase();
+      Array.from(grid.children).forEach(card=>{
+        const title = (card.querySelector('.prod-title')||{}).textContent || '';
+        card.style.display = title.toLowerCase().includes(q) ? '' : 'none';
+      });
+    });
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
